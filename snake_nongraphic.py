@@ -1,10 +1,13 @@
+def clear_bord():
 
-game_bord=[]                                            #create a list for rows
+    game_bord=[]                                            #create a list for rows
 
-for number in range(10):                                 #create rows in a loop
-    row=[".",".",".",".",".",".",".",".",".","."]
-    game_bord.append(row)
-                                                    #append rows to created list
+    for number in range(10):                                 #create rows in a loop
+        row=[".",".",".",".",".",".",".",".",".","."]
+        game_bord.append(row)
+    return game_bord
+
+clear_bord()                                                    #append rows to created list
 
 
 def print_gamebord(rows):
@@ -13,46 +16,53 @@ def print_gamebord(rows):
 
 #print_gamebord(game_bord)
 
-draw_map=[(0,0),(1,0),(2,0)]          #tuppels in a list, x & y
+movement=[(0,0),(1,0),(2,0)]          #tuppels in a list, x & y
+apple_list=[(2,5),(7,3),(9,9)]
 
-def change_map(game_bord,draw_map):
-    updated_bord=game_bord.copy()
+def change_map(draw_map, apple_list):
+    updated_bord=clear_bord()
     for i in draw_map:
         y= i[0]                                         #y=row
         x= i[1]                                         #x=position in list
-        updated_bord[x][y]="X"                             #exchange given position by draw_maplist
+        updated_bord[x][y]="X"
+    for i in apple_list:
+        y=i[0]
+        x=i[1]
+        updated_bord[x][y]="o"
 
     print_gamebord(updated_bord)                           #call printfunction
 
-change_map(game_bord, draw_map)                         #call change_mapfunction with draw_maplist
+change_map(movement, apple_list)                         #call change_mapfunction with draw_maplist
+
+
 
 #user_input=input("Give me a direction: n,s,w or e: ")
-movement=[(2,0)]                                        #initiating startposition x,y for row and position
+                                       #initiating startposition x,y for row and position
 
 def movement_snake(movement,user_input):
 
     y= movement[-1][0]                                   #[position in list] [position in tupple]
     x= movement[-1][1]
 
-    if user_input=="s":
+    if user_input=="s"and x<9:
         movement.append((y,x+1))
         movement.pop(0)
-    elif user_input=="n":
+    elif user_input=="n" and x>0:
         movement.append((y,x-1))
         movement.pop(0)
-    elif user_input=="w":
+    elif user_input=="w" and y>0:
         movement.append((y-1,x))
         movement.pop(0)
-    elif user_input=="e":
+    elif user_input=="e" and y<9:
         movement.append((y+1,x))
         movement.pop(0)
 
     else:
-        input("Wrong direction, please typ n,s,w or e: ")
+        input("Wrong direction or not possible, please typ n,s,w or e: ")
 
 
 
 while True:
     user_input=input("Give me a direction: n,s,w or e: ")
     movement_snake(movement,user_input)
-    change_map(game_bord, movement)
+    change_map (movement, apple_list)
